@@ -17,7 +17,7 @@ DenseLayer output(64, 10, Activation::Linear, seed);
 // TRAINING
 // ---------------------------------------------------------------------------
 const double lr = 0.001;
-const size_t numEpochs = 20;
+const size_t numEpochs = 25;
 const size_t BATCH_SIZE = 8;
 
 const double DECAY_RATE1 = 0.9;
