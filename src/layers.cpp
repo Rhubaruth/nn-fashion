@@ -31,7 +31,7 @@ DenseLayer::DenseLayer(size_t numInputs, size_t numNeurons, Activation act,
 
   // std::srand(seed);
   std::mt19937 gen(seed);
-  std::normal_distribution<double> dist(0.0, 1.0/numInputs);
+  std::normal_distribution<double> dist(0.0, 2.0/numInputs);
   for (double &w : weights)
     w = dist(gen);
 }
