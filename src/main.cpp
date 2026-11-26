@@ -3,8 +3,6 @@
 #include <cmath>
 #include <iostream>
 
-#include <algorithm>
-
 // ---------------------------------------------------------------------------
 // NETWORK LAYERS
 // ---------------------------------------------------------------------------
@@ -47,7 +45,13 @@ std::vector<double> softmax(const std::vector<double> &vec) {
 }
 
 size_t argmax(const std::vector<double> &v) {
-  return std::max_element(v.begin(), v.end()) - v.begin();
+  size_t max = 0;
+  for (size_t i = 1; i < v.size(); i++) {
+    if (v[i] > v[max]) {
+      max = i;
+    }
+  }
+  return max;
 }
 
 // ---------------------------------------------------------------------------
@@ -78,9 +82,6 @@ std::vector<double> momentumB[3] = {
 // ---------------------------------------------------------------------------
 
 void network_inference(const std::vector<double> &input) {
-  // for (size_t i = 0; i < input.size(); i++) {
-  //   input[i] = input[i] / 255.0;
-  // }
   hidden1.forward(input);
   hidden2.forward(hidden1.getValues());
   output.forward(hidden2.getValues());
@@ -188,7 +189,6 @@ int main() {
   hidden2.zeroGradients();
 
   size_t batchCount = 0;
-  // int correct = 0;
 
   printf("---   PARAMETERS   ---\n");
   printf("Seed: %d\n\n", seed);
@@ -214,6 +214,7 @@ int main() {
       // Backpropagation
       network_backprop(trainingInputs[x], trainingLabels[x][0]);
 
+      // Learn
       if (batchCount == BATCH_SIZE) {
         Adam(hidden1, lr, batchCount, 0, t);
         Adam(hidden2, lr, batchCount, 1, t);
@@ -226,7 +227,7 @@ int main() {
   }
 
   if (batchCount > 0) {
-    // SGD
+    // Learn
     Adam(hidden1, lr, batchCount, 0, t);
     Adam(hidden2, lr, batchCount, 1, t);
     Adam(output, lr, batchCount, 2, t);
