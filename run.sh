@@ -27,7 +27,7 @@ echo "#################"
 touch train_predictions.csv
 touch test_predictions.csv
 
-./network
+nice -n 15 ./network
 
 python evaluator/evaluate.py train_predictions.csv data/fashion_mnist_train_labels.csv  
 python evaluator/evaluate.py test_predictions.csv data/fashion_mnist_test_labels.csv  
